@@ -14,12 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $Categories = Category::latest('id')->get();
+        $categories = Category::latest('id')->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $Categories
-        ]);
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -27,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -38,14 +35,9 @@ class CategoryController extends Controller
         $category = $request->validated();
         $category['slug'] = str::slug($request->validated('name'), '-');
 
-        // dd($category);
         $data = Category::create($category);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Category created successfully',
-            'data' => $data
-        ]);
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -61,7 +53,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('category.edit', compact('category'));
     }
 
     /**
@@ -73,11 +65,7 @@ class CategoryController extends Controller
         $attributes['slug'] = str::slug($request->validated('name'), '-');
         $category->update($attributes);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Category updated successfully.',
-            'data' => $category
-        ]);
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -86,9 +74,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Category deleted successfully.'
-        ]);
+        return redirect()->route('categories.index');
     }
 }
