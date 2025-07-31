@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCourseRequest;
+use App\Models\Category;
 use App\Models\Course;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::with(['category', 'modules.contents'])->get();
+        $courses = Course::with(['category', 'modules.contents'])->latest()->get();
 
-        return response()->json($courses);
+        return view('course.index', compact('courses'));
     }
 
     /**
@@ -25,7 +26,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        
+        $categories = Category::all();
+        return view('course.create', compact('categories'));
     }
 
     /**
@@ -33,6 +35,7 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $attributes = $request->validated();
@@ -47,29 +50,26 @@ class CourseController extends Controller
                     'title' => $moduleData['title']
                 ]);
 
+                // dd($moduleData['contents']);
                 foreach ($moduleData['contents'] as $contentData) {
                     $contentImagePath = null;
                     if (isset($contentData['image'])) {
                         $contentImagePath = $contentData['image']->store('contents', 'public');
                     }
                     $module->contents()->create([
-                        'text' => $contentData['text'],
-                        'image' => $contentImagePath,
-                        'video' => $contentData['video'],
-                        'link' => $contentData['link']
+                        'text' => $contentData['text'] ?? null,
+                        'image' => $contentImagePath ?? null,
+                        'video' => $contentData['video'] ?? null,
+                        'link' => $contentData['link'] ?? null
                     ]);
                 }
             }
 
             DB::commit();
-            return response()->json(
-                $course->load(['category', 'modules.contents'])
-            );
+           return redirect()->route('courses.index')->with('success', 'Course created successfully!');
         } catch (Exception $e) {
-            return response()->json([
-                'error' => true,
-                'message' => $e->getMessage()
-            ]);
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error creating course: ' . $e->getMessage())->withInput();
         }
     }
 }
