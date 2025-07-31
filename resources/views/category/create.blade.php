@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-2xl mt-10 px-4">
+    <div class="max-w-full mt-10 px-4">
         <div class="bg-white shadow-md rounded-lg p-6">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800">➕ Add New Category</h2>
