@@ -58,7 +58,7 @@ php artisan storage:link
 ### 6. 🧾 Compile Frontend Assets
 
 ```bash
-npm run dev     # For development
+npm run dev
 ```
 
 ### 7. 🚴 Run the Project
