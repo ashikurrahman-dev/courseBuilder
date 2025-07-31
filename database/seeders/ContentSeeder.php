@@ -21,7 +21,7 @@ class ContentSeeder extends Seeder
                 Content::create([
                     'module_id' => $module->id,
                     'text' => "Content $i for module {$module->title}",
-                    'image' => 'https://via.placeholder.com/640x480.png?text=Image+'. $i,
+                    'image' => null,
                     'video' => 'https://www.youtube.com/watch?v=aAQMClhJubM',
                     'link' => 'https://example.com/resource-'.$i,
                 ]);
