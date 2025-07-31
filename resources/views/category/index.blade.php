@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-5xl mt-10 px-4">
+    <div class="max-w-full mt-10 px-4">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">📂 Category List</h2>
 
         <a href="{{ route('categories.create') }}"
