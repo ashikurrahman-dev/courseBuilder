@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li>
-                <a href="" class="block px-6 py-3 hover:bg-gray-200 text-gray-700">
+                <a href="{{ route('courses.index') }}" class="block px-6 py-3 hover:bg-gray-200 text-gray-700">
                     🎓 Course
                 </a>
             </li>
