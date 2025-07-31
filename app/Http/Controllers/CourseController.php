@@ -35,7 +35,6 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        // dd($request->all());
         DB::beginTransaction();
         try {
             $attributes = $request->validated();
@@ -50,7 +49,6 @@ class CourseController extends Controller
                     'title' => $moduleData['title']
                 ]);
 
-                // dd($moduleData['contents']);
                 foreach ($moduleData['contents'] as $contentData) {
                     $contentImagePath = null;
                     if (isset($contentData['image'])) {
@@ -66,7 +64,7 @@ class CourseController extends Controller
             }
 
             DB::commit();
-           return redirect()->route('courses.index')->with('success', 'Course created successfully!');
+            return redirect()->route('courses.index')->with('success', 'Course created successfully!');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Error creating course: ' . $e->getMessage())->withInput();
